@@ -1,6 +1,6 @@
 # Paper & Pixel Bookstore
 
-A modern React Native bookstore application with dual buyer/seller functionality, featuring image upload capabilities and a complete e-commerce workflow.
+A modern React Native bookstore application with dual buyer/seller functionality, featuring image upload capabilities and a complete e-commerce workflow. It includes real-time inventory management, and an intuitive interface for seamless browsing, selling, and purchasing of books.
 
 ## Demo Video
 https://drive.google.com/file/d/1I_gZhLDJbmqL5VEz5WExkFNrwEAQ8hrM/view
