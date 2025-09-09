@@ -2,6 +2,9 @@
 
 A modern React Native bookstore application with dual buyer/seller functionality, featuring image upload capabilities and a complete e-commerce workflow.
 
+## Demo Video
+https://drive.google.com/file/d/1I_gZhLDJbmqL5VEz5WExkFNrwEAQ8hrM/view
+
 ## Features
 
 ### For Buyers
