@@ -11,9 +11,12 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { styles } from '../styles/styles';
+
+const { height: screenHeight } = Dimensions.get('window');
 
 // Cloudinary configuration
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dhsvjvgec/image/upload';
@@ -143,195 +146,217 @@ const AddEditModal = ({ visible, form, setForm, onClose, onSave, isEdit = false 
 
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <KeyboardAvoidingView
-        style={styles.modalOverlay}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-      >
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
+      <View style={{
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+      }}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1, justifyContent: 'center' }}
         >
-          <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>
-              {isEdit ? "Edit Book" : "Add New Book"}
-            </Text>
-              
-            <TextInput
-              placeholder="Book title *"
-              value={form.title}
-              onChangeText={(t) => setForm((s) => ({ ...s, title: t }))}
-              style={styles.input}
-              placeholderTextColor="#9ca3af"
-            />
-            
-            <TextInput
-              placeholder="Description (optional)"
-              value={form.description}
-              onChangeText={(t) => setForm((s) => ({ ...s, description: t }))}
-              style={[styles.input, { height: 100, textAlignVertical: 'top' }]}
-              multiline
-              placeholderTextColor="#9ca3af"
-            />
-            
-            <TextInput
-              placeholder="Price *"
-              value={form.price}
-              onChangeText={(t) => setForm((s) => ({ ...s, price: t }))}
-              style={styles.input}
-              keyboardType="decimal-pad"
-              placeholderTextColor="#9ca3af"
-            />
-            
-            <TextInput
-              placeholder="Stock quantity *"
-              value={form.stock}
-              onChangeText={(t) => setForm((s) => ({ ...s, stock: t }))}
-              style={styles.input}
-              keyboardType="number-pad"
-              placeholderTextColor="#9ca3af"
-            />
-
-            {/* Image Selection Section */}
-            <View style={{ marginVertical: 16 }}>
-              <Text style={{ 
-                fontSize: 14, 
-                color: '#6b7280', 
-                marginBottom: 8,
-                fontWeight: '500'
-              }}>
-                Book Cover Image
-              </Text>
-              
-              {form.image_url ? (
-                <View style={{
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  marginBottom: 12,
-                  position: 'relative'
-                }}>
-                  <Image
-                    source={{ uri: form.image_url }}
-                    style={{
-                      width: '100%',
-                      height: 200,
-                      backgroundColor: '#f3f4f6'
-                    }}
-                    resizeMode="cover"
-                  />
-                  <TouchableOpacity
-                    style={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      backgroundColor: 'rgba(0,0,0,0.6)',
-                      borderRadius: 20,
-                      width: 32,
-                      height: 32,
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                    onPress={removeImage}
-                  >
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>×</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View style={{
-                  height: 200,
-                  backgroundColor: '#f9fafb',
-                  borderRadius: 12,
-                  borderWidth: 2,
-                  borderColor: '#e5e7eb',
-                  borderStyle: 'dashed',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: 12
-                }}>
-                  <Text style={{
-                    color: '#9ca3af',
-                    fontSize: 16,
-                    marginBottom: 8
-                  }}>
-                    No image selected
-                  </Text>
-                  <Text style={{
-                    color: '#6b7280',
-                    fontSize: 12,
-                    textAlign: 'center'
-                  }}>
-                    Tap the button below to add a cover image
-                  </Text>
-                </View>
-              )}
-
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#f3f4f6',
-                  borderWidth: 1,
-                  borderColor: '#d1d5db',
-                  borderRadius: 8,
-                  paddingVertical: 12,
-                  paddingHorizontal: 16,
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  justifyContent: 'center'
-                }}
-                onPress={selectImage}
-                disabled={imageUploading}
-              >
-                {imageUploading ? (
-                  <>
-                    <ActivityIndicator size="small" color="#3b82f6" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#6b7280', fontWeight: '500' }}>
-                      Uploading...
-                    </Text>
-                  </>
-                ) : (
-                  <>
-                    <Text style={{ color: '#374151', fontWeight: '500', marginRight: 8 }}>
-                      📷
-                    </Text>
-                    <Text style={{ color: '#374151', fontWeight: '500' }}>
-                      {form.image_url ? 'Change Image' : 'Select Image'}
-                    </Text>
-                  </>
-                )}
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: 20,
-                gap: 12,
-              }}
+          <View style={{
+            backgroundColor: 'white',
+            borderRadius: 16,
+            maxHeight: screenHeight * 0.85,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.25,
+            shadowRadius: 8,
+            elevation: 8,
+          }}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ padding: 24 }}
+              keyboardShouldPersistTaps="handled"
             >
-              <TouchableOpacity
-                style={[styles.ghostBtn, { flex: 1 }]}
-                onPress={onClose}
-                disabled={imageUploading}
-              >
-                <Text style={styles.ghostLabel}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.primaryBtn, 
-                  { flex: 1, marginTop: 0 },
-                  imageUploading && { opacity: 0.6 }
-                ]}
-                onPress={onSave}
-                disabled={imageUploading}
-              >
-                <Text style={styles.primaryLabel}>
-                  {isEdit ? "Save Changes" : "Add Book"}
+              <Text style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                color: '#1f2937',
+                marginBottom: 24,
+                textAlign: 'center'
+              }}>
+                {isEdit ? "Edit Book" : "Add New Book"}
+              </Text>
+                
+              <TextInput
+                placeholder="Book title *"
+                value={form.title}
+                onChangeText={(t) => setForm((s) => ({ ...s, title: t }))}
+                style={styles.input}
+                placeholderTextColor="#9ca3af"
+              />
+              
+              <TextInput
+                placeholder="Description (optional)"
+                value={form.description}
+                onChangeText={(t) => setForm((s) => ({ ...s, description: t }))}
+                style={[styles.input, { height: 100, textAlignVertical: 'top' }]}
+                multiline
+                placeholderTextColor="#9ca3af"
+              />
+              
+              <TextInput
+                placeholder="Price *"
+                value={form.price}
+                onChangeText={(t) => setForm((s) => ({ ...s, price: t }))}
+                style={styles.input}
+                keyboardType="decimal-pad"
+                placeholderTextColor="#9ca3af"
+              />
+              
+              <TextInput
+                placeholder="Stock quantity *"
+                value={form.stock}
+                onChangeText={(t) => setForm((s) => ({ ...s, stock: t }))}
+                style={styles.input}
+                keyboardType="number-pad"
+                placeholderTextColor="#9ca3af"
+              />
+
+              {/* Image Selection Section */}
+              <View style={{ marginVertical: 16 }}>
+                <Text style={{ 
+                  fontSize: 14, 
+                  color: '#6b7280', 
+                  marginBottom: 8,
+                  fontWeight: '500'
+                }}>
+                  Book Cover Image
                 </Text>
-              </TouchableOpacity>
-            </View>
+                
+                {form.image_url ? (
+                  <View style={{
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    marginBottom: 12,
+                    position: 'relative'
+                  }}>
+                    <Image
+                      source={{ uri: form.image_url }}
+                      style={{
+                        width: '100%',
+                        height: 160,
+                        backgroundColor: '#f3f4f6'
+                      }}
+                      resizeMode="cover"
+                    />
+                    <TouchableOpacity
+                      style={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        borderRadius: 20,
+                        width: 32,
+                        height: 32,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                      onPress={removeImage}
+                    >
+                      <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>×</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View style={{
+                    height: 160,
+                    backgroundColor: '#f9fafb',
+                    borderRadius: 12,
+                    borderWidth: 2,
+                    borderColor: '#e5e7eb',
+                    borderStyle: 'dashed',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 12
+                  }}>
+                    <Text style={{
+                      color: '#9ca3af',
+                      fontSize: 16,
+                      marginBottom: 8
+                    }}>
+                      No image selected
+                    </Text>
+                    <Text style={{
+                      color: '#6b7280',
+                      fontSize: 12,
+                      textAlign: 'center'
+                    }}>
+                      Tap the button below to add a cover image
+                    </Text>
+                  </View>
+                )}
+
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#f3f4f6',
+                    borderWidth: 1,
+                    borderColor: '#d1d5db',
+                    borderRadius: 8,
+                    paddingVertical: 12,
+                    paddingHorizontal: 16,
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'center'
+                  }}
+                  onPress={selectImage}
+                  disabled={imageUploading}
+                >
+                  {imageUploading ? (
+                    <>
+                      <ActivityIndicator size="small" color="#3b82f6" style={{ marginRight: 8 }} />
+                      <Text style={{ color: '#6b7280', fontWeight: '500' }}>
+                        Uploading...
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <Text style={{ color: '#374151', fontWeight: '500', marginRight: 8 }}>
+                        📷
+                      </Text>
+                      <Text style={{ color: '#374151', fontWeight: '500' }}>
+                        {form.image_url ? 'Change Image' : 'Select Image'}
+                      </Text>
+                    </>
+                  )}
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 20,
+                  gap: 12,
+                }}
+              >
+                <TouchableOpacity
+                  style={[styles.ghostBtn, { flex: 1 }]}
+                  onPress={onClose}
+                  disabled={imageUploading}
+                >
+                  <Text style={styles.ghostLabel}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.primaryBtn, 
+                    { flex: 1, marginTop: 0 },
+                    imageUploading && { opacity: 0.6 }
+                  ]}
+                  onPress={onSave}
+                  disabled={imageUploading}
+                >
+                  <Text style={styles.primaryLabel}>
+                    {isEdit ? "Save" : "Add Book"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
     </Modal>
   );
 };
